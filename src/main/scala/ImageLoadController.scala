@@ -69,10 +69,10 @@ class ImageLoadController extends Initializable {
 
 	def pickFile(event : ActionEvent) {
 		val fc : FileChooser = new FileChooser
-		val extension : FileChooser.ExtensionFilter = new FileChooser.ExtensionFilter("TIFF files (*.tif)", "*.tif")
+		val extension : FileChooser.ExtensionFilter = new FileChooser.ExtensionFilter("ND2 files (*.nd2)", "*.nd2")
 		fc.getExtensionFilters.add(extension)
 		file = fc.showOpenDialog(imageLoadAnchorPane.sceneProperty.get.getWindow)
-		tiffStack = ImageLoad.load(file)
+		tiffStack = ImageLoad.loadND2(file)
 		frameSlider.setValue(0)
 		frameSlider.setMax(tiffStack.getNumFrames - 1)
 		imagePreview.setImage(tiffStack.getJFXFrame(0))

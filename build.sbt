@@ -23,3 +23,4 @@ retrieveManaged := true
 jarName in assembly := "ShaleneGUV.jar"
 
 mainClass in assembly := Some("shalene.Launch")
+

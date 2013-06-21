@@ -3,13 +3,13 @@
 [debug] Waiting for threads to exit or System.exit to be called.
 [debug]   Classpath:
 [debug] 	/Users/James/Desktop/ShaleneGUV/target/scala-2.10/classes
+[debug] 	/Users/James/Desktop/ShaleneGUV/lib/ij.jar
+[debug] 	/Users/James/Desktop/ShaleneGUV/lib/loci_tools.jar
 [debug] 	/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/jfxrt.jar
 [debug] 	/Users/James/.sbt/boot/scala-2.10.2/lib/scala-library.jar
 [debug] 	/Users/James/Desktop/ShaleneGUV/lib_managed/jars/org.jfxtras/jfxtras-labs/jfxtras-labs-2.2-r5.jar
 [debug] Waiting for thread run-main to exit
 [debug] 	Thread run-main exited.
-[debug] Waiting for thread JavaFX Application Thread to exit
-[debug] 	Thread JavaFX Application Thread exited.
 [debug] Interrupting remaining threads (should be all daemons).
 [debug] Sandboxed run complete..
 [debug] Exited with code 0

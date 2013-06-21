@@ -2,6 +2,9 @@ package shalene
 
 import java.io.{File, FileInputStream}
 import java.util.ArrayList
+import ij.process.ImageProcessor
+import loci.formats.{ChannelSeparator, FormatException, IFormatReader}
+import loci.plugins.util.{ImageProcessorReader, LociPrefs}
 
 
 /** Loads stacked TIFFs and returns a `TiffStack[T]` object.
@@ -25,6 +28,16 @@ object ImageLoad {
     }
   }
 
+  def loadND2(file: File) = {
+    val reader = new ImageProcessorReader(new ChannelSeparator(LociPrefs.makeImageReader))
+    reader.setId(file.getAbsolutePath)
+    val numFrames = reader.getImageCount
+    val width = reader.getSizeX
+    val height = reader.getSizeY
+    val out = for(i <- 0 until numFrames) yield bitMask(reader.openProcessors(i)(0).getPixels.asInstanceOf[Array[Short]], width, height, 0xffff)
+    new TiffStack[Int](out)
+  }
+
   private def bitMask[T: Numeric : Manifest](xs: Array[T], width: Int, height: Int, mask: Int) : NumericImage[Int] = {
     val ev = implicitly[Numeric[T]]
     new NumericImage[Int](width, height, xs.view.map(ev.toInt(_)&mask).toArray)
@@ -42,5 +55,6 @@ object ImageLoad {
     is.close()
     new TiffStack[Int](out)
   }
+
 
 }
