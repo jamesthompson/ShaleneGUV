@@ -59,10 +59,25 @@ class GUV(var contours:IndexedSeq[Contour], val name:String) extends Serializabl
 
   def getAvgIntensity : IndexedSeq[Double] = contours.map(_.avgIntensity)
 
+  def getStDevAvgIntensities : IndexedSeq[Double] = contours.map(_.stDevIntensity)
+
+  def getAvgRadius : IndexedSeq[Double] = contours.map(_.avgRadius)
+
+  def getStDevRadius: IndexedSeq[Double] = contours.map(_.stDev)
+
+  case class GUVPrinter(avgInt: Double, stDevInt: Double, avgRadius: Double, stDevRadius: Double) {
+    override def toString = s"$avgInt\t$stDevInt\t$avgRadius\t$stDevRadius"
+  }
+
   def saveAvgIntensity : Unit = {
-    val avgInt = getAvgIntensity
-    val s = avgInt.map(a => s"${avgInt.indexOf(a)}\t$a").mkString("\n") // Avg int by frame as a list
-    val out = new PrintWriter(name + ".avgInt")
+    val avgInts = getAvgIntensity
+    val stDevInts = getStDevAvgIntensities
+    val avgRadii = getAvgRadius
+    val stDevRadii = getStDevRadius
+    val nums = for(i <- 0 until getSize) yield GUVPrinter(avgInts(i), stDevInts(i), avgRadii(i), stDevRadii(i))
+    val s = nums.mkString("\n")
+    val out = new PrintWriter(name + ".Analysis.csv")
+    out.print("Avg-Intensity\tStDev-Intensity\tAvg-Radius (px)\tStDev-Radius(px)\n")
     out.print(s)
     out.close
   }

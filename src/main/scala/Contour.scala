@@ -8,7 +8,9 @@ import javafx.scene.chart.XYChart
  * Date: 6/19/13
  */
 
-class Contour(var points : IndexedSeq[Point], val avgIntensity : Double = 0.0) extends Serializable {
+class Contour(var points : IndexedSeq[Point],
+              val avgIntensity : Double = 0.0,
+              val stDevIntensity : Double = 0.0) extends Serializable {
  
   def this() = this(IndexedSeq[Point]())   
   def addPoint(p:Point) = points = points.+:(p)

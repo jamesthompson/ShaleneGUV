@@ -99,12 +99,16 @@ class ImageLoadController extends Initializable {
 	}
 
 	def edgeIntensity(pl : (List[Double], PolarLocation)) : Double = {
-		val index = pl._2.y
-		val negIndex = index - 1
-		val posIndex = index + 1
+		val index = pl._2.x
+		val negIndex = index - 3
+		val posIndex = index + 3
 		val range = posIndex - negIndex
 		val subList = pl._1.slice(negIndex.toInt, posIndex.toInt)
 		subList.sum / range // average output
+	}
+
+	def edgeStDev(xs: List[Double], avg: Double) : Double = {
+    math.sqrt(xs.map(x => (x - avg) * (x -avg)).sum / xs.length)
 	}
 
 	private def getImgFromEdgeFinder(in: List[List[Double]]) = { 
@@ -143,8 +147,10 @@ class ImageLoadController extends Initializable {
 						for(img <- tiffStack.stack) {
 							val ef = new EdgeFinder(img.getDoubleImage.getBuffer, tiffStack.getWidth, tiffStack.getHeight)
 							val calc = ef.convImgToPolar(anglesSlider.getValue.toInt, thresholdSlider.getValue.toDouble, radiusSlider.getValue.toInt)
-							val avgInt = calc.map(edgeIntensity).sum / calc.length
-							val cont = new Contour(ef.getPoints(calc), avgInt)
+							val intensities = calc.map(edgeIntensity)
+							val avgInt = intensities.sum / intensities.length
+							val stDevInt = edgeStDev(intensities, avgInt)
+							val cont = new Contour(ef.getPoints(calc), avgInt, stDevInt)
 							cont.sortPoints
 							updateProgress(tiffStack.stack.indexOf(img), tiffStack.getNumFrames - 1)
 							guv.addContour(cont)
