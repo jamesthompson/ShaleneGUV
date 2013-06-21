@@ -18,7 +18,7 @@ import javafx.scene.paint.Color
 import javafx.scene.shape._
 import javafx.stage.FileChooser
 import javafx.util.Duration
-import jfxtras.labs.scene.control.gauge._
+// import jfxtras.labs.scene.control.gauge._
 import javafx.scene.control
 import scala.math._
 import javafx.scene.shape.Path
@@ -51,11 +51,11 @@ class ImageLoadController extends Initializable {
 	@FXML var imageBox : VBox = null
 	@FXML var toolBar : ToolBar = null
 
-	var anglesLCD : Lcd = null
-	var thresholdLCD : Lcd = null
+	// var anglesLCD : Lcd = null
+	// var thresholdLCD : Lcd = null
 	var anglesSlider : Slider = null
 	var thresholdSlider : Slider = null
-	var radiusLCD : Lcd = null
+	// var radiusLCD : Lcd = null
 	var radiusSlider : Slider = null
 
 	// Functions
@@ -279,7 +279,7 @@ class ImageLoadController extends Initializable {
 			def changed(arg0 : ObservableValue[_ <: Number], arg1 : Number, arg2 : Number) {
 				if (tiffStack != null) {
 					// anglesLCD.setValue(arg2.doubleValue)
-					updateEdge(arg2.intValue)
+					updateEdge(frameSlider.getValue.intValue)
 				}
 			}
 		})
@@ -287,7 +287,7 @@ class ImageLoadController extends Initializable {
 			def changed(arg0 : ObservableValue[_ <: Number], arg1 : Number, arg2 : Number) {
 				if (tiffStack != null) {
 					// thresholdLCD.setValue(arg1.doubleValue)
-					updateEdge(arg2.intValue)
+					updateEdge(frameSlider.getValue.intValue)
 				}
 			}
 		})
@@ -295,7 +295,7 @@ class ImageLoadController extends Initializable {
 			def changed(arg0 : ObservableValue[_ <: Number], arg1 : Number, arg2 : Number) {
 				if (tiffStack != null && edgePreviewButton.isSelected) {
 					// radiusLCD.setValue(arg2.intValue)
-					updateEdge(arg2.intValue)
+					updateEdge(frameSlider.getValue.intValue)
 				}
 			}
 		})

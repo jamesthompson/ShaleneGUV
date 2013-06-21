@@ -14,11 +14,6 @@ class NumericImage[@specialized BitDepth: Numeric : Manifest](val width: Int, va
 
   def getJFXImg = ImageVisualizer.getJavaFXImage(this.normalizedImage, width, height)
 
-  // def getEdge(min: Double, max: Double) = {
-  //   val imageEdge : NumericImage[Double] = ImageOps.detectEdge(min, max, normalizedImage)
-  //   ImageVisualizer.getJavaFXImage(imageEdge, width, height)
-  // }
-
   def getBuffer = buffer
 
   final def get(x: Int, y: Int) : BitDepth = buffer(y * width + x)

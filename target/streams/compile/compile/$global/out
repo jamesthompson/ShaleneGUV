@@ -14,7 +14,7 @@
 [debug] 	external source: Set()
 [debug] Initially invalidated: Set(/Users/James/Desktop/ShaleneGUV/src/main/scala/Point.scala, /Users/James/Desktop/ShaleneGUV/src/main/scala/ImageVisualizer.scala, /Users/James/Desktop/ShaleneGUV/src/main/scala/GUV.scala, /Users/James/Desktop/ShaleneGUV/src/main/scala/DialogController.scala, /Users/James/Desktop/ShaleneGUV/src/main/java/Launch.java, /Users/James/Desktop/ShaleneGUV/src/main/scala/FXMLFactory.scala, /Users/James/Desktop/ShaleneGUV/src/main/scala/Controller.scala, /Users/James/Desktop/ShaleneGUV/src/main/scala/PlotIntensityController.scala, /Users/James/Desktop/ShaleneGUV/src/main/scala/ImageLoadController.scala, /Users/James/Desktop/ShaleneGUV/src/main/scala/Contour.scala)
 [info] Compiling 9 Scala sources and 1 Java source to /Users/James/Desktop/ShaleneGUV/target/scala-2.10/classes...
-[debug] Running cached compiler a06b17a, interfacing (CompilerInterface) with Scala compiler version 2.10.2
+[debug] Running cached compiler 68ecd6d9, interfacing (CompilerInterface) with Scala compiler version 2.10.2
 [debug] Calling Scala compiler with arguments  (CompilerInterface):
 [debug] 	-d
 [debug] 	/Users/James/Desktop/ShaleneGUV/target/scala-2.10/classes
@@ -22,7 +22,7 @@
 [debug] 	/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/lib/JObjC.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home/jre/classes:/Users/James/.sbt/boot/scala-2.10.2/lib/scala-library.jar
 [debug] 	-classpath
 [debug] 	/Users/James/Desktop/ShaleneGUV/target/scala-2.10/classes:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/jfxrt.jar:/Users/James/Desktop/ShaleneGUV/lib_managed/jars/org.jfxtras/jfxtras-labs/jfxtras-labs-2.2-r5.jar
-[debug] Scala compilation took 3.524392 s
+[debug] Scala compilation took 3.776557 s
 [debug] Calling Javac with arguments:
 [debug] 	-source
 [debug] 	1.7
@@ -33,9 +33,9 @@
 [debug] 	-classpath
 [debug] 	/Users/James/Desktop/ShaleneGUV/target/scala-2.10/classes:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/jfxrt.jar:/Users/James/.sbt/boot/scala-2.10.2/lib/scala-library.jar:/Users/James/Desktop/ShaleneGUV/lib_managed/jars/org.jfxtras/jfxtras-labs/jfxtras-labs-2.2-r5.jar:/Users/James/.sbt/boot/scala-2.10.2/lib/scala-library.jar
 [debug] 	/Users/James/Desktop/ShaleneGUV/src/main/java/Launch.java
-[debug] Forking javac: /Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/bin/javac @/var/folders/fj/nbcytxl17p91qd63pc1kwkzr0000gn/T/sbt_771f66ea/argfile
+[debug] Forking javac: /Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/bin/javac @/var/folders/fj/nbcytxl17p91qd63pc1kwkzr0000gn/T/sbt_3f4d0523/argfile
 [debug] javac returned exit code: 0
-[debug] Java compilation took 0.806107 s
-[debug] Java compilation and analysis took 0.833208 s
+[debug] Java compilation took 0.786263 s
+[debug] Java compilation and analysis took 0.810323 s
 [debug] 	Invalidated direct: Set()
 [debug] Incrementally invalidated: Set()

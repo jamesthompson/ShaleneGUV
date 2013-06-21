@@ -25,15 +25,6 @@ class TiffStack[T : Numeric : Manifest](val stack: IndexedSeq[NumericImage[T]]) 
 
 	def getNumFrames : Int = stack.length
 
-	// def getNormalizedStack = {
-	// 	val minIntensity = stack.view.map(_.min).min
-	// 	val maxIntensity = stack.view.map(_.max).max
-	// 	println(s"before normalization min = $minIntensity, max = $maxIntensity")
-	// 	val normedImages = stack.view.map(_.normalizedImage(minIntensity, maxIntensity)).force.toIndexedSeq
-	// 	println(s"after normalization min = ${normedImages.map(_.min).min}, max = ${normedImages.map(_.max).max}")
-	// 	new TiffStack[Double](normedImages)
-	// }
-
 	def getJFXFrame(index: Int) = stack(index).getJFXImg
 
 	override def toString : String = width.toString + " x " + height.toString + ", number of frames = " + getNumFrames.toString

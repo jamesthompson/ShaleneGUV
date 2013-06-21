@@ -57,13 +57,13 @@ class GUV(var contours:IndexedSeq[Contour], val name:String) extends Serializabl
 
 	def calcScale : Double = contours.map(c => c.getMaxRadius).max
 
-  def getAvgIntensity : IndexedSeq[Double] = contours.map(_.avgIntensity)
+  def getAvgIntensity : IndexedSeq[Double] = contours.map(_.avgIntensity).reverse
 
-  def getStDevAvgIntensities : IndexedSeq[Double] = contours.map(_.stDevIntensity)
+  def getStDevAvgIntensities : IndexedSeq[Double] = contours.map(_.stDevIntensity).reverse
 
-  def getAvgRadius : IndexedSeq[Double] = contours.map(_.avgRadius)
+  def getAvgRadius : IndexedSeq[Double] = contours.map(_.avgRadius).reverse
 
-  def getStDevRadius: IndexedSeq[Double] = contours.map(_.stDev)
+  def getStDevRadius: IndexedSeq[Double] = contours.map(_.stDev).reverse
 
   case class GUVPrinter(avgInt: Double, stDevInt: Double, avgRadius: Double, stDevRadius: Double) {
     override def toString = s"$avgInt\t$stDevInt\t$avgRadius\t$stDevRadius"
