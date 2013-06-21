@@ -13,7 +13,7 @@ import loci.plugins.util.{ImageProcessorReader, LociPrefs}
   */
 object ImageLoad {
 
-  def load(file: File) = {
+  def loadTIFF(file: File) = {
     val td = new TiffDecoder(file)
     val fi = td.getTiffInfo.get(0)
     println("Bit depth is : " + fi.getType)
@@ -34,7 +34,10 @@ object ImageLoad {
     val numFrames = reader.getImageCount
     val width = reader.getSizeX
     val height = reader.getSizeY
-    val out = for(i <- 0 until numFrames) yield bitMask(reader.openProcessors(i)(0).getPixels.asInstanceOf[Array[Short]], width, height, 0xffff)
+    val bitDepth = reader.getBitsPerPixel
+    println(s"Number of bits per pixel = $bitDepth")
+    val mask = if(bitDepth == 8) 0xff else 0xffff
+    val out = for(i <- 0 until numFrames) yield bitMask(reader.openProcessors(i)(0).getPixels.asInstanceOf[Array[Short]], width, height, mask)
     new TiffStack[Int](out)
   }
 

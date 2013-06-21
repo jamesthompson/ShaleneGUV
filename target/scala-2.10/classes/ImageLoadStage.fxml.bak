@@ -25,7 +25,7 @@
     <Slider id="sliderHorizontal1" fx:id="frameSlider" opacity="0.0" prefWidth="224.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="45.0" />
     <VBox id="vBox1" fx:id="controllerBox" prefHeight="134.0" prefWidth="200.0" AnchorPane.leftAnchor="42.0" AnchorPane.topAnchor="61.0">
       <children>
-        <Button id="button4" fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" onAction="#deleteFrame" opacity="0.0" text="Delete Frame" textAlignment="CENTER" />
+        <Button id="button4" fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" onAction="#deleteFrame" text="Delete Frame" textAlignment="CENTER" />
       </children>
     </VBox>
     <VBox id="vBox2" fx:id="imageBox" minHeight="154.0" minWidth="224.0" prefHeight="394.9998779296875" prefWidth="224.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="69.0">

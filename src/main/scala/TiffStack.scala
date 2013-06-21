@@ -27,5 +27,7 @@ class TiffStack[T : Numeric : Manifest](val stack: IndexedSeq[NumericImage[T]]) 
 
 	def getJFXFrame(index: Int) = stack(index).getJFXImg
 
+	def dropFrames(n: Int) = new TiffStack[T](this.stack.drop(n))
+
 	override def toString : String = width.toString + " x " + height.toString + ", number of frames = " + getNumFrames.toString
 }

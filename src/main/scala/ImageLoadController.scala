@@ -45,7 +45,9 @@ class ImageLoadController extends Initializable {
 	@FXML var ckfPreview : ImageView = null
 	@FXML var frameSlider : Slider = null
 	@FXML var edgePreviewButton : CheckBox = null
-	@FXML var chooseButton : Button = null
+	@FXML var chooseButton1 : Button = null
+	@FXML var chooseButton2 : Button = null
+	@FXML var deleteButton : Button = null
 	@FXML var readyButton : Button = null
 	@FXML var controllerBox : VBox = null
 	@FXML var imageBox : VBox = null
@@ -67,7 +69,19 @@ class ImageLoadController extends Initializable {
 		this.guvList = guvList
 	}
 
-	def pickFile(event : ActionEvent) {
+	def pickFileTIFF(event : ActionEvent) {
+		val fc : FileChooser = new FileChooser
+		val extension : FileChooser.ExtensionFilter = new FileChooser.ExtensionFilter("TIFF files (*.tif)", "*.tif")
+		fc.getExtensionFilters.add(extension)
+		file = fc.showOpenDialog(imageLoadAnchorPane.sceneProperty.get.getWindow)
+		tiffStack = ImageLoad.loadTIFF(file)
+		frameSlider.setValue(0)
+		frameSlider.setMax(tiffStack.getNumFrames - 1)
+		imagePreview.setImage(tiffStack.getJFXFrame(0))
+		visualizeControllers
+	}
+
+	def pickFileND2(event : ActionEvent) {
 		val fc : FileChooser = new FileChooser
 		val extension : FileChooser.ExtensionFilter = new FileChooser.ExtensionFilter("ND2 files (*.nd2)", "*.nd2")
 		fc.getExtensionFilters.add(extension)
@@ -77,12 +91,18 @@ class ImageLoadController extends Initializable {
 		frameSlider.setMax(tiffStack.getNumFrames - 1)
 		imagePreview.setImage(tiffStack.getJFXFrame(0))
 		visualizeControllers
-		toolBar.getItems.remove(chooseButton)
 	}
 
-	def updatePreviewImage(frameIndex : Int) = imagePreview.setImage(tiffStack.getJFXFrame(frameIndex))
+	def deleteFrame(event: ActionEvent) = {
+ 		tiffStack = tiffStack.dropFrames(1)
+ 		frameSlider.setMax(tiffStack.getNumFrames - 1)
+ 		updatePreviewImage()
+ 		if(edgePreviewButton.isSelected) updateEdge()
+	}
 
-	def updateEdge(frame:Int) {
+	def updatePreviewImage(frameIndex : Int = 0) = imagePreview.setImage(tiffStack.getJFXFrame(frameIndex))
+
+	def updateEdge(frame: Int = 0) {
 		val ef = new EdgeFinder(tiffStack.getFrame(frame).getDoubleImage.getBuffer, tiffStack.getWidth, tiffStack.getHeight)
 		val calc = ef.convImgToPolar(anglesSlider.getValue.toInt, thresholdSlider.getValue.toDouble, radiusSlider.getValue.toInt)
 		val edgeLocation = calc.map(_._2)
@@ -184,6 +204,9 @@ class ImageLoadController extends Initializable {
 	}
 
 	def visualizeControllers {
+		toolBar.getItems.remove(chooseButton1)
+		toolBar.getItems.remove(chooseButton2)
+
 		val cdft : FadeTransition = new FadeTransition(Duration.millis(1000), controllerBox)
 		cdft.setFromValue(0.0)
 		cdft.setToValue(1.0)
@@ -245,6 +268,7 @@ class ImageLoadController extends Initializable {
 		controllerBox.getChildren.add(anglesSlider)
 		controllerBox.getChildren.add(thresholdSlider)
 		controllerBox.getChildren.add(radiusSlider)
+		deleteButton.setOpacity(1)
 		controllerBox.setOpacity(0)
 		setSliderParams
 	}
