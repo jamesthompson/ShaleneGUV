@@ -8,6 +8,8 @@
 [debug] 	/Users/James/Desktop/ShaleneGUV/lib_managed/jars/org.jfxtras/jfxtras-labs/jfxtras-labs-2.2-r5.jar
 [debug] Waiting for thread run-main to exit
 [debug] 	Thread run-main exited.
+[debug] Waiting for thread JavaFX Application Thread to exit
+[debug] 	Thread JavaFX Application Thread exited.
 [debug] Interrupting remaining threads (should be all daemons).
 [debug] Sandboxed run complete..
 [debug] Exited with code 0

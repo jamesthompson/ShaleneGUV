@@ -18,7 +18,7 @@ import javafx.scene.paint.Color
 import javafx.scene.shape._
 import javafx.stage.FileChooser
 import javafx.util.Duration
-// import jfxtras.labs.scene.control.gauge._
+import jfxtras.labs.scene.control.gauge._
 import javafx.scene.control
 import scala.math._
 import javafx.scene.shape.Path
@@ -53,9 +53,9 @@ class ImageLoadController extends Initializable {
 
 	// var anglesLCD : Lcd = null
 	// var thresholdLCD : Lcd = null
+	// var radiusLCD : Lcd = null
 	var anglesSlider : Slider = null
 	var thresholdSlider : Slider = null
-	// var radiusLCD : Lcd = null
 	var radiusSlider : Slider = null
 
 	// Functions
@@ -144,7 +144,9 @@ class ImageLoadController extends Initializable {
 				return new Task[GUV] {
 					protected def call : GUV = {
 						val guv : GUV = new GUV(file.getAbsolutePath)
+						var counter = 0
 						for(img <- tiffStack.stack) {
+							val numFrames = tiffStack.getNumFrames - 1
 							val ef = new EdgeFinder(img.getDoubleImage.getBuffer, tiffStack.getWidth, tiffStack.getHeight)
 							val calc = ef.convImgToPolar(anglesSlider.getValue.toInt, thresholdSlider.getValue.toDouble, radiusSlider.getValue.toInt)
 							val intensities = calc.map(edgeIntensity)
@@ -152,7 +154,8 @@ class ImageLoadController extends Initializable {
 							val stDevInt = edgeStDev(intensities, avgInt)
 							val cont = new Contour(ef.getPoints(calc), avgInt, stDevInt)
 							cont.sortPoints
-							updateProgress(tiffStack.stack.indexOf(img), tiffStack.getNumFrames - 1)
+							counter = counter + 1
+							updateProgress(counter, numFrames)
 							guv.addContour(cont)
 							guv.saveAvgIntensity
 						}
@@ -207,17 +210,22 @@ class ImageLoadController extends Initializable {
 	}
 
 	def makeControllers = {
-		// val StyleRadius : StyleModel = StyleModelBuilder.create.lcdDesign(LcdDesign.DARKBLUE).lcdValueFont(Gauge.LcdFont.LCD).lcdUnitStringVisible(true).lcdDecimals(0).lcdNumberSystemVisible(true).build
-		// val StyleAll : StyleModel = StyleModelBuilder.create.lcdDesign(LcdDesign.DARKBLUE).lcdValueFont(Gauge.LcdFont.LCD).lcdUnitStringVisible(true).lcdDecimals(3).lcdNumberSystemVisible(true).build
-		// anglesLCD = LcdBuilder.create.styleModel(StyleRadius).minMeasuredValueVisible(true).maxMeasuredValueVisible(true).minMeasuredValueDecimals(0).maxMeasuredValueDecimals(0).formerValueVisible(true).title("Number of Angles").unit("arb.").value(360).trendVisible(true).build
-		// anglesLCD.setPrefSize(200, 50)
+
+		val anglesLCD = new Lcd(StyleModelBuilder.create.lcdDesign(LcdDesign.DARKBLUE).lcdValueFont(Gauge.LcdFont.LCD).lcdUnitStringVisible(true).lcdDecimals(0).lcdNumberSystemVisible(true).build)
+		anglesLCD.setPrefSize(200, 50)
 		// anglesLCD.setMaxValue(1000)
-		// thresholdLCD = LcdBuilder.create.styleModel(StyleAll).minMeasuredValueVisible(true).maxMeasuredValueVisible(true).minMeasuredValueDecimals(3).maxMeasuredValueDecimals(3).formerValueVisible(true).title("Threshold").unit("%").value(10.0).trendVisible(true).build
+		// anglesLCD.setTitle("Number of Angles")
+		// anglesLCD.setUnit("arb.")
+		// val thresholdLCD = new Lcd(StyleModelBuilder.create.lcdDesign(LcdDesign.DARKBLUE).lcdValueFont(Gauge.LcdFont.LCD).lcdUnitStringVisible(true).lcdDecimals(2).lcdNumberSystemVisible(true).build)
 		// thresholdLCD.setPrefSize(200, 50)
 		// thresholdLCD.setMaxValue(250.0)
-		// radiusLCD = LcdBuilder.create.styleModel(StyleRadius).minMeasuredValueVisible(true).maxMeasuredValueVisible(true).minMeasuredValueDecimals(0).maxMeasuredValueDecimals(0).formerValueVisible(true).title("Radius Treshold").unit("px").value(0).trendVisible(true).build
+		// thresholdLCD.setTitle("Edge Threshold")
+		// thresholdLCD.setUnit("%")
+		// val radiusLCD = new Lcd(StyleModelBuilder.create.lcdDesign(LcdDesign.DARKBLUE).lcdValueFont(Gauge.LcdFont.LCD).lcdUnitStringVisible(true).lcdDecimals(0).lcdNumberSystemVisible(true).build)
 		// radiusLCD.setPrefSize(200, 50)
 		// radiusLCD.setMaxValue(500)
+		// thresholdLCD.setTitle("Radius Threshold")
+		// thresholdLCD.setUnit("px")
 
 		anglesSlider = new control.Slider()
 		anglesSlider.setMajorTickUnit(10)
@@ -253,7 +261,7 @@ class ImageLoadController extends Initializable {
 		radiusSlider.setShowTickMarks(false)
 		radiusSlider.setSnapToTicks(true)
 
-		// controllerBox.getChildren.add(anglesLCD)
+		controllerBox.getChildren.add(anglesLCD)
 		controllerBox.getChildren.add(anglesSlider)
 		// controllerBox.getChildren.add(thresholdLCD)
 		controllerBox.getChildren.add(thresholdSlider)
@@ -279,6 +287,7 @@ class ImageLoadController extends Initializable {
 			def changed(arg0 : ObservableValue[_ <: Number], arg1 : Number, arg2 : Number) {
 				if (tiffStack != null) {
 					// anglesLCD.setValue(arg2.doubleValue)
+					println(s"Number of angles = ${arg2.intValue}")
 					updateEdge(frameSlider.getValue.intValue)
 				}
 			}
@@ -287,6 +296,7 @@ class ImageLoadController extends Initializable {
 			def changed(arg0 : ObservableValue[_ <: Number], arg1 : Number, arg2 : Number) {
 				if (tiffStack != null) {
 					// thresholdLCD.setValue(arg1.doubleValue)
+					println(s"Threshold Percentage = ${arg2.doubleValue} %")
 					updateEdge(frameSlider.getValue.intValue)
 				}
 			}
@@ -295,6 +305,7 @@ class ImageLoadController extends Initializable {
 			def changed(arg0 : ObservableValue[_ <: Number], arg1 : Number, arg2 : Number) {
 				if (tiffStack != null && edgePreviewButton.isSelected) {
 					// radiusLCD.setValue(arg2.intValue)
+					println(s"Radius Threshold = ${arg2.intValue} px")
 					updateEdge(frameSlider.getValue.intValue)
 				}
 			}
