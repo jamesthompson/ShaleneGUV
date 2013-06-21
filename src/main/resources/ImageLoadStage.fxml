@@ -23,9 +23,31 @@
       </items>
     </ToolBar>
     <Slider id="sliderHorizontal1" fx:id="frameSlider" opacity="0.0" prefWidth="224.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="45.0" />
-    <VBox id="vBox1" fx:id="controllerBox" prefHeight="134.0" prefWidth="200.0" AnchorPane.leftAnchor="42.0" AnchorPane.topAnchor="61.0">
+    <VBox id="vBox1" fx:id="controllerBox" opacity="0.0" prefHeight="134.0" prefWidth="200.0" AnchorPane.leftAnchor="42.0" AnchorPane.topAnchor="61.0">
       <children>
-        <Button id="button4" fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" onAction="#deleteFrame" opacity="0.0" text="Delete Frame" textAlignment="CENTER" />
+        <HBox id="hBox1" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Slider id="sliderHorizontal4" opacity="0.0" fx:id="anglesSlider" />
+            <TextField id="textField1"  opacity="0.0" fx:id="angleLabel" prefWidth="61.0" promptText="Angles" />
+          </children>
+        </HBox>
+        <HBox id="hBox2" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Slider id="sliderHorizontal3" opacity="0.0" fx:id="thresholdSlider" />
+            <TextField id="textField2" opacity="0.0" fx:id="thresholdLabel" prefWidth="61.0" promptText="Threshold" />
+          </children>
+        </HBox>
+        <HBox id="hBox3" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Slider id="sliderHorizontal2" opacity="0.0" fx:id="radiusSlider" />
+            <TextField id="textField3" opacity="0.0" fx:id="radiusLabel" prefWidth="61.0" promptText="Radius" />
+          </children>
+        </HBox>
+        <HBox id="hBox4" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Button id="button4" fx:id="deleteButton" opacity="0.0" alignment="CENTER" contentDisplay="CENTER" onAction="#deleteFrame" text="Delete Frame" textAlignment="CENTER" />
+          </children>
+        </HBox>
       </children>
     </VBox>
     <VBox id="vBox2" fx:id="imageBox" minHeight="154.0" minWidth="224.0" prefHeight="394.9998779296875" prefWidth="224.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="69.0">

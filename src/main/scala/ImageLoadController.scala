@@ -18,7 +18,6 @@ import javafx.scene.paint.Color
 import javafx.scene.shape._
 import javafx.stage.FileChooser
 import javafx.util.Duration
-import jfxtras.labs.scene.control.gauge._
 import javafx.scene.control
 import scala.math._
 import javafx.scene.shape.Path
@@ -52,10 +51,12 @@ class ImageLoadController extends Initializable {
 	@FXML var controllerBox : VBox = null
 	@FXML var imageBox : VBox = null
 	@FXML var toolBar : ToolBar = null
-
-	var anglesSlider : Slider = null
-	var thresholdSlider : Slider = null
-	var radiusSlider : Slider = null
+	@FXML var anglesSlider : Slider = null
+	@FXML var thresholdSlider : Slider = null
+	@FXML var radiusSlider : Slider = null
+	@FXML var angleLabel : TextField = null
+	@FXML var thresholdLabel : TextField = null
+	@FXML var radiusLabel : TextField = null
 
 	// Functions
 
@@ -207,11 +208,15 @@ class ImageLoadController extends Initializable {
 		toolBar.getItems.remove(chooseButton1)
 		toolBar.getItems.remove(chooseButton2)
 
-		val cdft : FadeTransition = new FadeTransition(Duration.millis(1000), controllerBox)
-		cdft.setFromValue(0.0)
-		cdft.setToValue(1.0)
-		cdft.setCycleCount(1)
-		cdft.setAutoReverse(false)
+		anglesSlider.setOpacity(1)
+		thresholdSlider.setOpacity(1)
+		radiusSlider.setOpacity(1)
+		deleteButton.setOpacity(1)
+		angleLabel.setOpacity(1)
+		thresholdLabel.setOpacity(1)
+		radiusLabel.setOpacity(1)
+		controllerBox.setOpacity(1)
+
 		val slideft : FadeTransition = new FadeTransition(Duration.millis(1000), frameSlider)
 		slideft.setFromValue(0.0)
 		slideft.setToValue(1.0)
@@ -223,7 +228,6 @@ class ImageLoadController extends Initializable {
 		readyft.setToValue(1.0)
 		readyft.setCycleCount(Integer.MAX_VALUE)
 		readyft.setAutoReverse(true)
-		cdft.play
 		slideft.play
 		readyft.play
 		edgePreviewButton.setVisible(true)
@@ -231,9 +235,8 @@ class ImageLoadController extends Initializable {
 
 	def makeControllers = {
 
-		anglesSlider = new control.Slider()
 		anglesSlider.setMajorTickUnit(10)
-		anglesSlider.setMin(0)
+		anglesSlider.setMin(1)
 		anglesSlider.setMax(1000.0)
 		anglesSlider.setValue(360.0)
 		anglesSlider.setOrientation(Orientation.HORIZONTAL)
@@ -242,8 +245,6 @@ class ImageLoadController extends Initializable {
 		anglesSlider.setShowTickMarks(false)
 		anglesSlider.setSnapToTicks(true)
 
-
-		thresholdSlider = new control.Slider()
 		thresholdSlider.setMajorTickUnit(0.1)
 		thresholdSlider.setMin(0.0)
 		thresholdSlider.setMax(100.0)
@@ -254,7 +255,6 @@ class ImageLoadController extends Initializable {
 		thresholdSlider.setShowTickMarks(false)
 		thresholdSlider.setSnapToTicks(true)
 
-		radiusSlider = new control.Slider()
 		radiusSlider.setMajorTickUnit(1)
 		radiusSlider.setMin(0)
 		radiusSlider.setMax(500.0)
@@ -264,12 +264,7 @@ class ImageLoadController extends Initializable {
 		radiusSlider.setShowTickLabels(false)
 		radiusSlider.setShowTickMarks(false)
 		radiusSlider.setSnapToTicks(true)
-
-		controllerBox.getChildren.add(anglesSlider)
-		controllerBox.getChildren.add(thresholdSlider)
-		controllerBox.getChildren.add(radiusSlider)
-		deleteButton.setOpacity(1)
-		controllerBox.setOpacity(0)
+		
 		setSliderParams
 	}
 
@@ -288,7 +283,7 @@ class ImageLoadController extends Initializable {
 		anglesSlider.valueProperty.addListener(new ChangeListener[Number] {
 			def changed(arg0 : ObservableValue[_ <: Number], arg1 : Number, arg2 : Number) {
 				if (tiffStack != null) {
-					println(s"Number of angles = ${arg2.intValue}")
+					angleLabel.setText(s"${arg2.intValue}")
 					updateEdge(frameSlider.getValue.intValue)
 				}
 			}
@@ -296,7 +291,7 @@ class ImageLoadController extends Initializable {
 		thresholdSlider.valueProperty.addListener(new ChangeListener[Number] {
 			def changed(arg0 : ObservableValue[_ <: Number], arg1 : Number, arg2 : Number) {
 				if (tiffStack != null) {
-					println(s"Threshold Percentage = ${arg2.doubleValue} %")
+					thresholdLabel.setText(s"${"%.1f".format(arg2.doubleValue)}%")
 					updateEdge(frameSlider.getValue.intValue)
 				}
 			}
@@ -304,7 +299,7 @@ class ImageLoadController extends Initializable {
 		radiusSlider.valueProperty.addListener(new ChangeListener[Number] {
 			def changed(arg0 : ObservableValue[_ <: Number], arg1 : Number, arg2 : Number) {
 				if (tiffStack != null && edgePreviewButton.isSelected) {
-					println(s"Radius Threshold = ${arg2.intValue} px")
+					radiusLabel.setText(s"${arg2.intValue} px")
 					updateEdge(frameSlider.getValue.intValue)
 				}
 			}
