@@ -1,3 +1,7 @@
+import AssemblyKeys._ // put this at the top of the file
+
+assemblySettings
+
 name := "Shalene GUV Analyzer"
 
 version := "1.0a"
@@ -15,3 +19,7 @@ mainClass in (Compile, run) := Some("shalene.Launch")
 unmanagedJars in Compile <+= javaHome map { jh => Attributed.blank( new File( jh.getOrElse(sys.error("Error, could not get java home")),"jre/lib/jfxrt.jar" ) ) }
 
 retrieveManaged := true
+
+jarName in assembly := "ShaleneGUV.jar"
+
+mainClass in assembly := Some("shalene.Launch")

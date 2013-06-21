@@ -51,9 +51,6 @@ class ImageLoadController extends Initializable {
 	@FXML var imageBox : VBox = null
 	@FXML var toolBar : ToolBar = null
 
-	// var anglesLCD : Lcd = null
-	// var thresholdLCD : Lcd = null
-	// var radiusLCD : Lcd = null
 	var anglesSlider : Slider = null
 	var thresholdSlider : Slider = null
 	var radiusSlider : Slider = null
@@ -211,22 +208,6 @@ class ImageLoadController extends Initializable {
 
 	def makeControllers = {
 
-		val anglesLCD = new Lcd(StyleModelBuilder.create.lcdDesign(LcdDesign.DARKBLUE).lcdValueFont(Gauge.LcdFont.LCD).lcdUnitStringVisible(true).lcdDecimals(0).lcdNumberSystemVisible(true).build)
-		anglesLCD.setPrefSize(200, 50)
-		// anglesLCD.setMaxValue(1000)
-		// anglesLCD.setTitle("Number of Angles")
-		// anglesLCD.setUnit("arb.")
-		// val thresholdLCD = new Lcd(StyleModelBuilder.create.lcdDesign(LcdDesign.DARKBLUE).lcdValueFont(Gauge.LcdFont.LCD).lcdUnitStringVisible(true).lcdDecimals(2).lcdNumberSystemVisible(true).build)
-		// thresholdLCD.setPrefSize(200, 50)
-		// thresholdLCD.setMaxValue(250.0)
-		// thresholdLCD.setTitle("Edge Threshold")
-		// thresholdLCD.setUnit("%")
-		// val radiusLCD = new Lcd(StyleModelBuilder.create.lcdDesign(LcdDesign.DARKBLUE).lcdValueFont(Gauge.LcdFont.LCD).lcdUnitStringVisible(true).lcdDecimals(0).lcdNumberSystemVisible(true).build)
-		// radiusLCD.setPrefSize(200, 50)
-		// radiusLCD.setMaxValue(500)
-		// thresholdLCD.setTitle("Radius Threshold")
-		// thresholdLCD.setUnit("px")
-
 		anglesSlider = new control.Slider()
 		anglesSlider.setMajorTickUnit(10)
 		anglesSlider.setMin(0)
@@ -261,11 +242,8 @@ class ImageLoadController extends Initializable {
 		radiusSlider.setShowTickMarks(false)
 		radiusSlider.setSnapToTicks(true)
 
-		controllerBox.getChildren.add(anglesLCD)
 		controllerBox.getChildren.add(anglesSlider)
-		// controllerBox.getChildren.add(thresholdLCD)
 		controllerBox.getChildren.add(thresholdSlider)
-		// controllerBox.getChildren.add(radiusLCD)
 		controllerBox.getChildren.add(radiusSlider)
 		controllerBox.setOpacity(0)
 		setSliderParams
@@ -286,7 +264,6 @@ class ImageLoadController extends Initializable {
 		anglesSlider.valueProperty.addListener(new ChangeListener[Number] {
 			def changed(arg0 : ObservableValue[_ <: Number], arg1 : Number, arg2 : Number) {
 				if (tiffStack != null) {
-					// anglesLCD.setValue(arg2.doubleValue)
 					println(s"Number of angles = ${arg2.intValue}")
 					updateEdge(frameSlider.getValue.intValue)
 				}
@@ -295,7 +272,6 @@ class ImageLoadController extends Initializable {
 		thresholdSlider.valueProperty.addListener(new ChangeListener[Number] {
 			def changed(arg0 : ObservableValue[_ <: Number], arg1 : Number, arg2 : Number) {
 				if (tiffStack != null) {
-					// thresholdLCD.setValue(arg1.doubleValue)
 					println(s"Threshold Percentage = ${arg2.doubleValue} %")
 					updateEdge(frameSlider.getValue.intValue)
 				}
@@ -304,7 +280,6 @@ class ImageLoadController extends Initializable {
 		radiusSlider.valueProperty.addListener(new ChangeListener[Number] {
 			def changed(arg0 : ObservableValue[_ <: Number], arg1 : Number, arg2 : Number) {
 				if (tiffStack != null && edgePreviewButton.isSelected) {
-					// radiusLCD.setValue(arg2.intValue)
 					println(s"Radius Threshold = ${arg2.intValue} px")
 					updateEdge(frameSlider.getValue.intValue)
 				}
