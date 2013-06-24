@@ -14,8 +14,6 @@ javacOptions ++= Seq("-source", "1.7", "-target", "1.7")
 
 libraryDependencies += "org.jfxtras" % "jfxtras-labs" % "2.2-r5"
 
-libraryDependencies += "org.spire-math" %% "spire" % "0.5.0"
-
 mainClass in (Compile, run) := Some("shalene.Launch")
 
 unmanagedJars in Compile <+= javaHome map { jh => Attributed.blank( new File( jh.getOrElse(sys.error("Error, could not get java home")),"jre/lib/jfxrt.jar" ) ) }
