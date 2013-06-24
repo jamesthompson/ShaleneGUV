@@ -370,38 +370,48 @@ public class Reader {
      * short, int or float). Returns null if there was an IO exception. Does not
      * close the InputStream.
      */
-    public Object readPixels(InputStream in) {
-        Object pixels;
+
+
+    @SafeVarargs
+    static <E> E[] newArray(int length, E... array)
+    {
+        return Arrays.copyOf(array, length);
+    }
+
+    public <E> E[] readPixels(InputStream in) {
+        <E> E[] output;
         try {
             switch (fi.fileType) {
                 case FileInfo.GRAY8:
                 case FileInfo.COLOR8:
                     bytesPerPixel = 1;
                     skip(in);
-                    pixels = (Object) read8bitImage(in);
+                    byte[] pixels = read8bitImage(in);
+                    output = newArray(pixels.length, pixels)
                     break;
                 case FileInfo.GRAY16_SIGNED:
                 case FileInfo.GRAY16_UNSIGNED:
                     bytesPerPixel = 2;
                     skip(in);
-                    pixels = (Object) read16bitImage(in);
+                    short[] pixels = read16bitImage(in);
+                    output = newArray(pixels.length, pixels)
                     break;
-                case FileInfo.GRAY32_INT:
-                case FileInfo.GRAY32_UNSIGNED:
-                case FileInfo.GRAY32_FLOAT:
-                    bytesPerPixel = 4;
-                    skip(in);
-                    pixels = (Object)read32bitImage(in);
-                    break;
-                case FileInfo.GRAY64_FLOAT:
-                    bytesPerPixel = 8;
-                    skip(in);
-                    pixels = (Object)read64bitImage(in);
-                    break;
+                // case FileInfo.GRAY32_INT:
+                // case FileInfo.GRAY32_UNSIGNED:
+                // case FileInfo.GRAY32_FLOAT:
+                //     bytesPerPixel = 4;
+                //     skip(in);
+                //     pixels = (Object)read32bitImage(in);
+                //     break;
+                // case FileInfo.GRAY64_FLOAT:
+                //     bytesPerPixel = 8;
+                //     skip(in);
+                //     pixels = (Object)read64bitImage(in);
+                //     break;
                 default:
-                    pixels = null;
+                    // pixels = null;
             }
-            return pixels;
+            return output;
         } catch (IOException e) {
             return null;
         }

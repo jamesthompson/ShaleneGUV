@@ -8,10 +8,11 @@
 [debug] 	/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/jfxrt.jar
 [debug] 	/Users/James/.sbt/boot/scala-2.10.2/lib/scala-library.jar
 [debug] 	/Users/James/Desktop/ShaleneGUV/lib_managed/jars/org.jfxtras/jfxtras-labs/jfxtras-labs-2.2-r5.jar
+[debug] 	/Users/James/Desktop/ShaleneGUV/lib_managed/jars/org.spire-math/spire_2.10/spire_2.10-0.5.0.jar
+[debug] 	/Users/James/Desktop/ShaleneGUV/lib_managed/jars/org.spire-math/macros_2.10/macros_2.10-0.5.0.jar
+[debug] 	/Users/James/Desktop/ShaleneGUV/lib_managed/jars/org.scala-lang/scala-reflect/scala-reflect-2.10.2.jar
 [debug] Waiting for thread run-main to exit
 [debug] 	Thread run-main exited.
-[debug] Waiting for thread JavaFX Application Thread to exit
-[debug] 	Thread JavaFX Application Thread exited.
 [debug] Interrupting remaining threads (should be all daemons).
 [debug] Sandboxed run complete..
 [debug] Exited with code 0

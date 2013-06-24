@@ -5,6 +5,7 @@ import java.util.ArrayList
 import ij.process.ImageProcessor
 import loci.formats.{ChannelSeparator, FormatException, IFormatReader}
 import loci.plugins.util.{ImageProcessorReader, LociPrefs}
+import spire.math.{UByte, UShort}
 
 
 /** Loads stacked TIFFs and returns a `TiffStack[T]` object.
@@ -53,7 +54,9 @@ object ImageLoad {
       val out = for(i <- 0 until fileData.nImages) yield {
         val pixels = reader.readPixels(is, skip)
         skip = fileData.gapBetweenImages
-        bitMask(pixels.asInstanceOf[Array[T]], fileData.width, fileData.height, mask)
+        val upixels = reader.readPixels(is, skip).map(UShort(_))
+        if(i == 0 ) println(upixels.mkString("\n"))
+        bitMask(pixels, fileData.width, fileData.height, mask)
       }
     is.close()
     new TiffStack[Int](out)
