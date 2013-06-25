@@ -1,7 +1,6 @@
 package shalene
 
 import java.awt.image._
-//import java.awt.{Point => JPoint}
 import javafx.scene.image.{Image => JfxImg}
 import javax.imageio.ImageIO
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream, IOException}

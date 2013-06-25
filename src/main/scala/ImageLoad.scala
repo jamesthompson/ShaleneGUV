@@ -1,63 +1,54 @@
 package shalene
 
-import java.io.{File, FileInputStream}
-import java.util.ArrayList
 import ij.process.ImageProcessor
+import java.io.{File, FileInputStream}
+import java.lang.Float
 import loci.formats.{ChannelSeparator, FormatException, IFormatReader}
 import loci.plugins.util.{ImageProcessorReader, LociPrefs}
 
-
-/** Loads stacked TIFFs and returns a `TiffStack[T]` object.
-  * @author James R. Thompson, D.Phil
-  * @since 11/16/12
-  */
 object ImageLoad {
 
-  def loadTIFF(file: File) = {
-    val td = new TiffDecoder(file)
+	def loadTIFF(file: File) : TiffStack[Int] = {
+		val td = new TiffDecoder(file)
     val fi = td.getTiffInfo.get(0)
-    println("Bit depth is : " + fi.getType)
-    fi.getType match {
-      case "byte" => loadImage[Byte](fi, file, 0xff)
-      case "short" => loadImage[Short](fi, file, 0xffff)
-      case "ushort" => loadImage[Short](fi, file, 0xffff)
-      case "int" => loadImage[Int](fi, file)
-      case "uint" => loadImage[Int](fi, file)
-      case "float" => loadImage[Float](fi, file)
-      case "double" => loadImage[Double](fi, file)
-    }
-  }
+    val in = new FileInputStream(file)
+    val reader = new ImageReader(fi)
+    val stack = for(i <- 0 until fi.nImages) yield new NumericImage[Int](fi.width, fi.height, fi.fileType match {
+			case FileInfo.GRAY8 =>  reader.read8bitImage(in).view.map(_&0xff).toArray
+			case FileInfo.COLOR8 => reader.read8bitImage(in).view.map(_&0xff).toArray
+			case FileInfo.GRAY16_SIGNED => reader.read16bitImage(in).view.map(_&0xffff).toArray
+			case FileInfo.GRAY16_UNSIGNED => reader.read16bitImage(in).view.map(_&0xffff).toArray
+			case FileInfo.GRAY32_INT => reader.read32bitImage(in).view.map(java.lang.Float.floatToIntBits(_)).toArray
+			case FileInfo.GRAY32_UNSIGNED => reader.read32bitImage(in).view.map(java.lang.Float.floatToIntBits(_)).toArray
+			case FileInfo.GRAY32_FLOAT => reader.read32bitImage(in).view.map(java.lang.Float.floatToIntBits(_)).toArray
+			case FileInfo.GRAY64_FLOAT => reader.read64bitImage(in).view.map(java.lang.Float.floatToIntBits(_)).toArray
+			case FileInfo.RGB => reader.readChunkyRGB(in)
+			case FileInfo.BGR => reader.readChunkyRGB(in)
+			case FileInfo.ARGB => reader.readChunkyRGB(in)
+			case FileInfo.ABGR => reader.readChunkyRGB(in)
+			case FileInfo.BARG => reader.readChunkyRGB(in)
+			case FileInfo.RGB_PLANAR => reader.readPlanarRGB(in)
+			case FileInfo.BITMAP => reader.read1bitImage(in).view.map(_&0xff).toArray
+			case FileInfo.GRAY12_UNSIGNED => reader.read12bitImage(in).view.map(_&0xffff).toArray
+			case FileInfo.GRAY24_UNSIGNED => reader.read24bitImage(in).view.map(java.lang.Float.floatToIntBits(_)).toArray
+		})
+		in.close
+		new TiffStack(stack)
+	}
 
-  def loadND2(file: File) = {
+	def loadND2(file: File) = {
     val reader = new ImageProcessorReader(new ChannelSeparator(LociPrefs.makeImageReader))
     reader.setId(file.getAbsolutePath)
     val numFrames = reader.getImageCount
     val width = reader.getSizeX
     val height = reader.getSizeY
     val bitDepth = reader.getBitsPerPixel
-    println(s"Number of bits per pixel = $bitDepth")
     val mask = if(bitDepth == 8) 0xff else 0xffff
-    val out = for(i <- 0 until numFrames) yield bitMask(reader.openProcessors(i)(0).getPixels.asInstanceOf[Array[Short]], width, height, mask)
-    new TiffStack[Int](out)
+    val out = for(i <- 0 until numFrames) yield reader.openProcessors(i)(0).getPixels match {
+    	case ba:Array[Byte] => new NumericImage[Int](width, height, ba.view.map(_&0xff).toArray)
+    	case sa:Array[Short] => new NumericImage[Int](width, height, sa.view.map(_&0xffff).toArray)
+    }
+    new TiffStack(out)
   }
-
-  private def bitMask[T: Numeric : Manifest](xs: Array[T], width: Int, height: Int, mask: Int) : NumericImage[Int] = {
-    val ev = implicitly[Numeric[T]]
-    new NumericImage[Int](width, height, xs.view.map(ev.toInt(_)&mask).toArray)
-  }
-
-  private def loadImage[T: Numeric : Manifest](fileData: FileInfo, file: File, mask: Int = 0) : TiffStack[Int] = {
-    val is = new FileInputStream(file)
-    val reader = new Reader(fileData)
-    var skip = fileData.getOffset
-      val out = for(i <- 0 until fileData.nImages) yield {
-        val pixels = reader.readPixels(is, skip)
-        skip = fileData.gapBetweenImages
-        bitMask(pixels.asInstanceOf[Array[T]], fileData.width, fileData.height, mask)
-      }
-    is.close()
-    new TiffStack[Int](out)
-  }
-
 
 }
